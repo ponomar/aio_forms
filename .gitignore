@@ -3,6 +3,6 @@
 venv/
 .idea/
 .pypirc
-Forms_Api.egg-info/
+AIO_Forms.egg-info/
 dist/
 build/
