@@ -1,0 +1,8 @@
+*.pyc
+*~
+venv/
+.idea/
+.pypirc
+Forms_Api.egg-info/
+dist/
+build/
