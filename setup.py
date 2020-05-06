@@ -25,7 +25,7 @@ setup(
     zip_safe=False,
     platforms='any',
     packages=find_packages(),
-    py_modules=['aio_forms', 'tests'],
+    py_modules=['aio_forms'],
     install_requires=[],
     tests_require=[
         'pytest>=5.4.1',

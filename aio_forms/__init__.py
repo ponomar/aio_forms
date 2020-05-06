@@ -21,4 +21,4 @@ from .validators.number_range_validator import NumberRangeValidator
 from .validators.regex_validator import RegexValidator
 
 
-__version__ = '0.1.0'
+__version__ = '0.2'

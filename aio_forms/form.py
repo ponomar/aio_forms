@@ -28,7 +28,6 @@ def _get_fields(form):
             fields_keys.append(value.key)
 
     fields.sort(key=lambda x: x._creation_counter)
-
     return tuple(fields)
 
 
