@@ -52,12 +52,19 @@ class Form(object):
             field.set_value(formdata.get(field.key))
 
     def set_object_data(self):
+        if (
+            hasattr(self.object, 'get')
+            and hasattr(self.object, 'keys')
+            and hasattr(self.object, 'values')
+            and hasattr(self.object, 'items')
+        ):
+            get_value = lambda x: self.object.get(x)
+        else:
+            get_value = lambda x: getattr(self.object, x, None)
+
         for field in self.fields:
-            if (
-                hasattr(self.object, field.key)
-                and not isinstance(field, PasswordField)
-            ):
-                field.set_value_from_object(getattr(self.object, field.key))
+            if not isinstance(field, PasswordField):
+                field.set_value_from_object(get_value(field.key))
 
     async def validate(self):
         errors = {}
