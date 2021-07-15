@@ -51,6 +51,42 @@ def test_without_default():
     assert schema['options'] == [[k_, v_, k_ is None] for k_, v_ in options]
 
 
+async def test_validate():
+    field = SelectField(key=FIELD_KEY, options=[(i, i) for i in ('1', 'a')])
+    field.set_value('1')
+    assert await field.validate(None) is True
+    field.set_value(None)
+    assert await field.validate(None) is True
+    field.set_value('b')
+    assert await field.validate(None) is False
+
+
+async def test_validate_required():
+    field = SelectField(key=FIELD_KEY, options=[(i, i) for i in ('1', 'a')], required=True)
+    field.set_value('1')
+    assert await field.validate(None) is True
+    field.set_value(None)
+    assert await field.validate(None) is False
+    field.set_value('b')
+    assert await field.validate(None) is False
+
+
+async def test_validate_when_options_are_empty():
+    field = SelectField(key=FIELD_KEY, options=[])
+    field.set_value('1')
+    assert await field.validate(None) is False
+    field.set_value(None)
+    assert await field.validate(None) is True
+
+
+async def test_validate_when_options_are_empty_required():
+    field = SelectField(key=FIELD_KEY, options=[], required=True)
+    field.set_value('1')
+    assert await field.validate(None) is False
+    field.set_value(None)
+    assert await field.validate(None) is False
+
+
 def test_without_default_with_updated_value():
     options = [
         [None, 'Title'],

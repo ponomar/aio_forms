@@ -58,8 +58,7 @@ class SelectField(Field):
             self.error = self.get_required_error()
             return False
 
-        keys = [k_ for k_, v_, s_ in self.options]
-        if keys and self.value is not None and self.value not in keys:
+        if self.value is not None and self.value not in [k for k, v, s in self.options]:
             self.error = (
                 self.error_not_in_options()
                 if callable(self.error_not_in_options)
