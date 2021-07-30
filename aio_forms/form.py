@@ -52,9 +52,9 @@ class Form(object):
         for field in self.fields:
             if isinstance(field, SelectMultipleField):
                 if hasattr(formdata, 'getlist'):
-                    value = formdata.getlist(field.key)
+                    value = formdata.getlist(field.key, [])
                 else:
-                    value = formdata.getall(field.key)
+                    value = formdata.getall(field.key, [])
             else:
                 value = formdata.get(field.key)
 
