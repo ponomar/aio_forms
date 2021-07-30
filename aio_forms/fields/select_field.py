@@ -54,17 +54,25 @@ class SelectField(Field):
             yield [self.fld_coerce(key), label, selected]
 
     async def validate(self, form) -> bool:
-        if self.value is None and self.required:
+        empty = self.value is None or self.value == []
+        if empty and self.required:
             self.error = self.get_required_error()
             return False
 
-        if self.value is not None and self.value not in [k for k, v, s in self.options]:
-            self.error = (
-                self.error_not_in_options()
-                if callable(self.error_not_in_options)
-                else self.error_not_in_options
-            )
-            return False
+        if not empty:
+            if isinstance(self.value, list):
+                value = set(self.value)
+            else:
+                value = {self.value}
+
+            keys = {i[0] for i in self.options if i[0] is not None}
+            if not (keys and keys.issuperset(value)):
+                self.error = (
+                    self.error_not_in_options()
+                    if callable(self.error_not_in_options)
+                    else self.error_not_in_options
+                )
+                return False
 
         return await super().validate(form)
 

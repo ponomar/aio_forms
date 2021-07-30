@@ -2,6 +2,7 @@ from copy import copy
 
 from aio_forms.fields.base_field import Field, check_params
 from aio_forms.fields.password_field import PasswordField
+from aio_forms.fields.select_multiple_field import SelectMultipleField
 
 
 def _get_fields(form):
@@ -49,7 +50,15 @@ class Form(object):
 
     def set_formdata(self, formdata):
         for field in self.fields:
-            field.set_value(formdata.get(field.key))
+            if isinstance(field, SelectMultipleField):
+                if hasattr(formdata, 'getlist'):
+                    value = formdata.getlist(field.key)
+                else:
+                    value = formdata.getall(field.key)
+            else:
+                value = formdata.get(field.key)
+
+            field.set_value(value)
 
     def set_object_data(self):
         if (

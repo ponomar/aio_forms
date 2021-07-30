@@ -43,11 +43,3 @@ class SelectMultipleField(SelectField):
         for key, label in self.get_options_iterator():
             selected = self.fld_coerce(key) in self.value
             yield [self.fld_coerce(key), label, selected]
-
-    async def validate(self, form) -> bool:
-        keys = {k_ for k_, v_, s_ in self.options}
-        if keys and not set(self.value).issuperset(keys):
-            self.error = self.error_not_in_options
-            return False
-
-        return await super().validate(form)
